@@ -31,7 +31,7 @@ jobs:
       - setup_project
       - run:
           name: Generate Artifacts
-          command: "vue-cli-service electron:build -w"
+          command: "npm run electron:build:w"
   build:
     working_directory: ~/project
     docker:
@@ -41,7 +41,7 @@ jobs:
       - setup_project
       - run:
           name: Generate Artifacts
-          command: "vue-cli-service electron:build -l"
+          command: "npm run electron:build:l"
       - store_artifacts:
           path: ./out       
 workflows:
