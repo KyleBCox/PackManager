@@ -21,6 +21,9 @@ jobs:
             - ./node_modules
           key: dependency-cache-{{checksum "package.json"}}
       - run:
+          name: Install Windows Deps
+          command: sudo apt install -y wine
+      - run:
           name: Generate Artifacts
           command: "npm run electron:build"
       - store_artifacts:
