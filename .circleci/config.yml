@@ -24,7 +24,7 @@ jobs:
           name: Generate Artifacts
           command: "npm run electron:build"
       - store_artifacts:
-          path: ~/out
+          path: ./out
 
 
           
