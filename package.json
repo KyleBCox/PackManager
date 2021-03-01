@@ -11,7 +11,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "electron:build": "vue-cli-service electron:build -w",
+    "electron:build:l": "vue-cli-service electron:build -l",
+    "electron:build:m": "vue-cli-service electron:build -m",
+    "electron:build:w": "vue-cli-service electron:build -w",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
