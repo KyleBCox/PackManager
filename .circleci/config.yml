@@ -1,16 +1,13 @@
 version: 2.1
 orbs:
+  windows: circleci/windows@2.4.0
   node: circleci/node@3.0.0
-jobs:
-  build:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:11 
+commands:
+  setup_project:
     steps:
-      - checkout
       - run:
           name: Update NPM
-          command: "sudo npm install -g npm"
+          command: "npm install -g npm @vue/cli vue-cli-service"
       - restore_cache:
           key: dependency-cache-{{checksum "package.json"}}
       - run:
@@ -20,14 +17,38 @@ jobs:
           paths:
             - ./node_modules
           key: dependency-cache-{{checksum "package.json"}}
+jobs:
+  build_windows:
+    executor: windows/default
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run: 
+          name: Download NodeJS
+          command: wget https://nodejs.org/dist/v14.16.0/node-v14.16.0-x64.msi -outfile "node.msi"
+          working_directory: ~/installers
       - run:
-          name: Install Windows Deps
-          command: sudo apt install -y wine
+          name: Install NodeJS
+          command: Start-Process msiexec.exe -Wait -ArgumentList '/I ./node.msi /quiet'
+          working_directory: ~/project
+      - setup_project
       - run:
           name: Generate Artifacts
-          command: "npm run electron:build"
+          command: "vue-cli-service electron:build -w"
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:11 
+    steps:
+      - checkout
+      - setup_project
+      - run:
+          name: Generate Artifacts
+          command: "vue-cli-service electron:build -l"
       - store_artifacts:
-          path: ./out
-
-
-          
+          path: ./out       
+workflows:
+  all:
+    jobs:
+      - build
+      - build_windows
