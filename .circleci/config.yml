@@ -32,6 +32,8 @@ jobs:
       - run:
           name: Generate Artifacts
           command: "npm run electron:build:w"
+      - store_artifacts:
+          path: ./dist_electron
   build:
     working_directory: ~/project
     docker:
@@ -43,7 +45,7 @@ jobs:
           name: Generate Artifacts
           command: "npm run electron:build:l"
       - store_artifacts:
-          path: ./out       
+          path: ./dist_electron      
 workflows:
   all:
     jobs:
