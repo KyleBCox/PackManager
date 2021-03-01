@@ -5,9 +5,6 @@ orbs:
 commands:
   setup_project:
     steps:
-      - run:
-          name: Update NPM
-          command: "npm install -g npm @vue/cli"
       - restore_cache:
           key: dependency-cache-{{checksum "package.json"}}
       - run:
@@ -31,6 +28,9 @@ jobs:
           name: Install NodeJS
           command: Start-Process msiexec.exe -Wait -ArgumentList '/I ./node.msi /quiet'
           working_directory: ~/project
+      - run:
+          name: Update NPM
+          command: "npm install -g npm @vue/cli"
       - setup_project
       - run:
           name: Generate Artifacts
@@ -41,6 +41,9 @@ jobs:
       - image: circleci/node:11 
     steps:
       - checkout
+      - run:
+          name: Update NPM
+          command: "sudo npm install -g npm @vue/cli"
       - setup_project
       - run:
           name: Generate Artifacts
